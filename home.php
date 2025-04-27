@@ -1,59 +1,139 @@
-
-<style>
-    .carousel-item>img{
-        object-fit:cover !important;
-    }
-    #carouselExampleControls .carousel-inner{
-        height:35em !important;
-    }
-</style>
-<section class="py-3">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <?php 
-                            $upload_path = "uploads/banner";
-                            if(is_dir(base_app.$upload_path)): 
-                            $file= scandir(base_app.$upload_path);
-                            $_i = 0;
-                                foreach($file as $img):
-                                    if(in_array($img,array('.','..')))
-                                        continue;
-                            $_i++;
-                                
-                        ?>
-                        <div class="carousel-item h-100 <?php echo $_i == 1 ? "active" : '' ?>">
-                            <img src="<?php echo validate_image($upload_path.'/'.$img) ?>" class="d-block w-100  h-100" alt="<?php echo $img ?>">
-                        </div>
-                        <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-target="#carouselExampleControls" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="row justify-content-center mt-n3">
-            <div class="col-lg-10 col-md-11 col-sm-11 col-sm-11">
-                <div class="card card-outline rounded-0">
-                    <div class="card-body">
-                        <div class="container-fluid">
-                            <center>
-                                <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
-                            </center>
-                        <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<h1>Welcome, <?php echo $_settings->userdata('firstname')." ".$_settings->userdata('lastname') ?>!</h1>
+<hr>
+<div class="row">
+  <div class="col-12 col-sm-4 col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-gradient-danger elevation-1"><i class="fas fa-users"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Control Teams</span>
+        <span class="info-box-number text-right h5">
+          <?php 
+            $team = $conn->query("SELECT * FROM team_list where delete_flag = 0")->num_rows;
+            echo format_num($team);
+          ?>
+          <?php ?>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
     </div>
-</section>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-12 col-sm-4 col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-gradient-secondary elevation-1"><i class="fas fa-fire"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Pending Requests</span>
+        <span class="info-box-number text-right h5">
+          <?php 
+            $request = $conn->query("SELECT id FROM request_list where `status` = 0")->num_rows;
+            echo format_num($request);
+          ?>
+          <?php ?>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-12 col-sm-4 col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-gradient-light elevation-1"><i class="fas fa-fire"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Assigned Requests</span>
+        <span class="info-box-number text-right h5">
+          <?php 
+            $request = $conn->query("SELECT id FROM request_list where `status` = 1")->num_rows;
+            echo format_num($request);
+          ?>
+          <?php ?>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <div class="col-12 col-sm-4 col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-gradient-info elevation-1"><i class="fas fa-fire"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Team OTW Requests</span>
+        <span class="info-box-number text-right h5">
+          <?php 
+            $request = $conn->query("SELECT id FROM request_list where `status` = 2")->num_rows;
+            echo format_num($request);
+          ?>
+          <?php ?>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-12 col-sm-4 col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-gradient-primary elevation-1"><i class="fas fa-fire"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">On-Progress Requests</span>
+        <span class="info-box-number text-right h5">
+          <?php 
+            $request = $conn->query("SELECT id FROM request_list where `status` = 3")->num_rows;
+            echo format_num($request);
+          ?>
+          <?php ?>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+  <div class="col-12 col-sm-4 col-md-4">
+    <div class="info-box">
+      <span class="info-box-icon bg-gradient-teal elevation-1"><i class="fas fa-fire"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">Completed Requests</span>
+        <span class="info-box-number text-right h5">
+          <?php 
+            $request = $conn->query("SELECT id FROM request_list where `status` = 4")->num_rows;
+            echo format_num($request);
+          ?>
+          <?php ?>
+        </span>
+      </div>
+      <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+  </div>
+  <!-- /.col -->
+</div>
+<div class="container">
+  <?php 
+    $files = array();
+      $fopen = scandir(base_app.'uploads/banner');
+      foreach($fopen as $fname){
+        if(in_array($fname,array('.','..')))
+          continue;
+        $files[]= validate_image('uploads/banner/'.$fname);
+      }
+  ?>
+  <div id="tourCarousel"  class="carousel slide" data-ride="carousel" data-interval="3000">
+      <div class="carousel-inner h-100">
+          <?php foreach($files as $k => $img): ?>
+          <div class="carousel-item  h-100 <?php echo $k == 0? 'active': '' ?>">
+              <img class="d-block w-100  h-100" style="object-fit:contain" src="<?php echo $img ?>" alt="">
+          </div>
+          <?php endforeach; ?>
+      </div>
+      <a class="carousel-control-prev" href="#tourCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#tourCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+      </a>
+  </div>
+</div>

@@ -1,8 +1,12 @@
+<style>
+  [class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link.active, [class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link.active:hover {
+      color: #ffffff !important;
+  }
 </style>
 <!-- Main Sidebar Container -->
-      <aside class="main-sidebar sidebar-dark-primary elevation-4 sidebar-no-expand">
+      <aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
         <!-- Brand Logo -->
-        <a href="<?php echo base_url ?>admin" class="brand-link bg-gradient-navy text-sm">
+        <a href="<?php echo base_url ?>admin" class="brand-link bg-maroon text-sm">
         <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Store Logo" class="brand-image img-circle elevation-3" style="opacity: .8;width: 1.5rem;height: 1.5rem;max-height: unset">
         <span class="brand-text font-weight-light"><?php echo $_settings->info('short_name') ?></span>
         </a>
@@ -32,28 +36,90 @@
                       </a>
                     </li> 
                     <li class="nav-item dropdown">
-                      <a href="./?page=posts" class="nav-link nav-posts">
-                        <i class="nav-icon fas fa-blog"></i>
+                      <a href="./?page=teams" class="nav-link nav-teams">
+                        <i class="nav-icon fas fa-users"></i>
                         <p>
-                          Posts
+                          Control Teams
                         </p>
                       </a>
                     </li> 
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-exclamation-triangle"></i>
+                        <p>
+                          Requests
+                          <i class="right fas fa-angle-left"></i>
+                        </p>
+                      </a>
+                      <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                          <a href="./?page=requests/manage_request" class="nav-link tree-item nav-requests_manage_request">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create New</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=0" class="nav-link tree-item nav-requests_0">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Pending</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=1" class="nav-link tree-item nav-requests_1">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Assigned to Team</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=2" class="nav-link tree-item nav-requests_2">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Team on their Way</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=3" class="nav-link tree-item nav-requests_3">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Fire Refief on Progress</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=4" class="nav-link tree-item nav-requests_4">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Fire Refief Completed</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests" class="nav-link tree-item nav-requests">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>List All</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
                     <?php if($_settings->userdata('type') == 1): ?>
                     <li class="nav-header">Maintenance</li>
                     <li class="nav-item dropdown">
-                      <a href="<?php echo base_url ?>admin/?page=categories" class="nav-link nav-categories">
-                        <i class="nav-icon fas fa-th-list"></i>
+                      <a href="<?php echo base_url ?>admin/?page=reports" class="nav-link nav-reports">
+                        <i class="nav-icon far fa-circle"></i>
                         <p>
-                          Category List
+                          Daily Report
+                        </p>
+                      </a>
+                    </li>
+                    <li class="nav-header">Maintenance</li>
+                    <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin/?page=user/list" class="nav-link nav-user_list">
+                        <i class="nav-icon fas fa-users-cog"></i>
+                        <p>
+                          User List
                         </p>
                       </a>
                     </li>
                     <li class="nav-item dropdown">
-                      <a href="<?php echo base_url ?>admin/?page=user/list" class="nav-link nav-user/list">
-                        <i class="nav-icon fas fa-users-cog"></i>
+                      <a href="<?php echo base_url ?>admin/?page=system_info/contact_info" class="nav-link nav-system_info_contact_info">
+                        <i class="nav-icon fas fa-phone-square-alt"></i>
                         <p>
-                          User List
+                          Contact Info
                         </p>
                       </a>
                     </li>
@@ -89,14 +155,14 @@
       <script>
     $(document).ready(function(){
       var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
-      var s = '<?php echo isset($_GET['s']) ? $_GET['s'] : '' ?>';
+      var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
       page = page.replace(/\//g,'_');
-      console.log(page)
-
+      page = status != '' ? page + "_" + status : page;
+      console.log($('.nav-link.nav-'+page)[0])
       if($('.nav-link.nav-'+page).length > 0){
              $('.nav-link.nav-'+page).addClass('active')
         if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
-            $('.nav-link.nav-'+page).closest('.nav-treeview').siblings('a').addClass('active')
+            $('.nav-link.nav-'+page).addClass('active')
           $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
         }
         if($('.nav-link.nav-'+page).hasClass('nav-is-tree') == true){
@@ -104,6 +170,6 @@
         }
 
       }
-      $('.nav-link.active').addClass('bg-gradient-navy')
+      $('.nav-link.active').addClass('bg-gradient-maroon')
     })
   </script>
